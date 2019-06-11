@@ -1,8 +1,8 @@
 package model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
@@ -18,6 +18,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "users")
+@DynamicUpdate
 public class User extends AbstractBaseEntity {
 
     public static final String DELETE = "User.delete";
@@ -31,9 +32,7 @@ public class User extends AbstractBaseEntity {
     @Size(max = 100)
     private String email;
 
-    @Column(name = "password", nullable = false)
-    @NotBlank
-    @Size(min = 5, max = 100)
+    @Column(name = "password", nullable = true)
     private String password;
 
     @Column(name = "name")
@@ -52,9 +51,18 @@ public class User extends AbstractBaseEntity {
     @NotNull
     private String phone;
 
-    @Column(name = "registered", columnDefinition = "timestamp default now()")
-    @NotNull
+    @Column(name = "registered",
+            columnDefinition = "timestamp default now()",
+            updatable = false)
+
     private Date registered = new Date();
+
+
+    @Column(name = "sex")
+    private int sex;
+
+    @Column(name = "birthday")
+    private Date birthday;
 
     @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
     @JsonIgnore
@@ -63,20 +71,31 @@ public class User extends AbstractBaseEntity {
     public User() {
     }
 
-    public User(Integer id, String email, String password, String name, String phone, Date registred, boolean enabled,Role role, Role... roles ) {
+    public User(Integer id, String email, String password, String name, String phone, int sex, Date registred, boolean enabled, Date birthday) {
         super(id);
         this.enabled = enabled;
         this.email = email;
         this.password = password;
         this.name = name;
         this.phone = phone;
+        this.sex = sex;
         this.registered = registred;
-        setRoles(EnumSet.of(role,roles));
+        this.birthday = birthday;
     }
 
+    public User(Integer id, String email, String password, String name, String phone, int sex, Date registred, boolean enabled, Date birthday,  Role... roles){
+        this(id,email,password,name,phone,sex,registred,enabled,birthday);
+        setRoles(Arrays.asList(roles));
+    }
+    public User(Integer id, String email, String password, String name, String phone, int sex, Date registred, boolean enabled, Date birthday, Set<Role> roles) {
+        this(id,email,password,name,phone,sex,registred,enabled,birthday);
+        setRoles(roles);
+    }
     public Set<Role>    getRoles() {
         return roles;
     }
+
+    public Role getFirstRole() {return roles.stream().findFirst().get(); }
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
@@ -134,11 +153,19 @@ public class User extends AbstractBaseEntity {
         this.phone = phone;
     }
 
-    public Date getRegistred() {
-        return registered;
+    public int getSex() {
+        return sex;
     }
 
-    public void setRegistred(Date registred) {
-        this.registered = registred;
+    public void setSex(int sex) {
+        this.sex = sex;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 }

@@ -17,6 +17,10 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class UserRepositoryImp  implements UserRepository{
 
+
+    @PersistenceContext
+    private EntityManager em;
+
     @Override
     public boolean existsByEmail(String email) {
         List<User> users = em.createNamedQuery(User.BY_EMAIL, User.class)
@@ -44,8 +48,6 @@ public class UserRepositoryImp  implements UserRepository{
             return  Optional.ofNullable(DataAccessUtils.singleResult(users));
     }
 
-    @PersistenceContext
-    private EntityManager em;
 
     @Override
     @Transactional
@@ -58,6 +60,7 @@ public class UserRepositoryImp  implements UserRepository{
             return em.merge(user);
         }
     }
+
 
 
     @Override

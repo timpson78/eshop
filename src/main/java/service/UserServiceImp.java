@@ -59,7 +59,7 @@ public class UserServiceImp implements UserService {
 
     @Override
     public void update(User user) {
-
+       repository.save(user);
     }
 
     @Override

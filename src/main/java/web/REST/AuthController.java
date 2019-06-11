@@ -10,7 +10,6 @@ import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,16 +21,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import repository.UserRepository;
-import utils.exceptions.AppException;
+import utils.exceptions.NotFoundException;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.Collections;
 import java.util.Date;
 
 @RestController
 @RequestMapping("/auth")
-@PreAuthorize("hasAuthority('ROLE_DOMAIN_USER')")
 public class AuthController {
 
     @Autowired
@@ -60,8 +57,16 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = tokenProvider.generateToken(authentication);
-        return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
+        User user=userRepository.findByEmail(loginRequest.getUsernameOrEmail()).orElseThrow(() ->
+                new NotFoundException("user  not found")
+        );
+        Integer userId = user.getId();
+        Role role = user.getFirstRole();
+
+
+        return ResponseEntity.ok(new JwtAuthenticationResponse(userId, role, jwt));
     }
+
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
@@ -73,8 +78,8 @@ public class AuthController {
 
         // Creating user's account
         User user = new User(null, signUpRequest.getEmail(),signUpRequest.getPassword(),
-                signUpRequest.getName(),"+79181885535",  new Date(), true,
-                model.Role.ROLE_USER);
+                signUpRequest.getName(),"+79181885535",  0,new Date(), true,
+               null,  model.Role.ROLE_USER);
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 

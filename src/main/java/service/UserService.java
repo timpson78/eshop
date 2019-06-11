@@ -10,6 +10,7 @@ import java.util.Optional;
 public interface UserService {
 
     User findByEmail(String email) throws NotFoundException;
+
     User findById(int id);
 
     User create(User user);
