@@ -78,7 +78,7 @@ public class AuthController {
 
         // Creating user's account
         User user = new User(null, signUpRequest.getEmail(),signUpRequest.getPassword(),
-                signUpRequest.getName(),"+79181885535",  0,new Date(), true,
+                signUpRequest.getName(),signUpRequest.getPhone(),  0,new Date(), true,
                null,  model.Role.ROLE_USER);
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));

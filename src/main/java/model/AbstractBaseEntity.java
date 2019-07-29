@@ -5,9 +5,9 @@ import javax.persistence.*;
 @MappedSuperclass
 @Access(AccessType.FIELD)
 public class AbstractBaseEntity {
-
+    public static final int START_SEQ = 10000;
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_seq_gen")
     protected Integer id;
 
     protected AbstractBaseEntity() {

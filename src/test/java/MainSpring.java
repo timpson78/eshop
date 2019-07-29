@@ -1,32 +1,46 @@
-import model.Role;
-import model.User;
+import model.items.*;
+import model.seo.SeoMetaData;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.context.support.GenericXmlApplicationContext;
-import repository.UserRepositoryImp;
-import service.UserServiceImp;
+import org.springframework.transaction.annotation.Transactional;
+import repository.ItemCategoryRepositoryImp;
+import repository.ItemRepositoryImp;
+import service.*;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.Month;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 public class MainSpring {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
-        try (ConfigurableApplicationContext appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml", "spring/spring-db.xml")) {
+        try (ConfigurableApplicationContext appCtx = new ClassPathXmlApplicationContext("spring/spring-app-test.xml","spring/spring-db.xml")) {
             System.out.println("Bean definition names: " + Arrays.toString(appCtx.getBeanDefinitionNames()));
-            appCtx.getBeanDefinitionNames();
-            UserServiceImp myUserServ = appCtx.getBean(UserServiceImp.class);
-          //  UserRepositoryImp userRepo = appCtx.getBean(UserRepositoryImp.class);
+            //appCtx.getBeanDefinitionNames();
+          //  UserServiceImp myUserServ = appCtx.getBean(UserServiceImp.class);
+             ItemCategoryServiceImp itemCategoryService = appCtx.getBean(ItemCategoryServiceImp.class);
          //   User user=myUserServ.create(new User(null, "digital2@mail.ru", "12345", "first", "+7918-188-55-35", new Date(), true, Role.ROLE_USER));
         //    User user= myUserServ.findByEmail("digital2@mail.ru");
-               User user= myUserServ.findById(11);
-               System.out.println("edee: "+user);
+
+            //Item item = itemService.get(31);
+
+            //List<ItemImage> images=item.getImages();
+//             Item item = new Item(0, "myTitle", "MyShortDescription", "MyDescription", null,"MyUrlSeo", new BigDecimal("4.01"), 2, new ItemMesure(null, "MyItemMesureName"),
+//                       12, "MyPartNumber", new BigDecimal("10.01"), new ItemBrand(null,"MyItemBrandName") , new ItemCategory(null, 1, 10,  0, "MyCategoryName"),
+//                     true, true, false, true, new SeoMetaData(null, "MySeoTitle","MySeoKeywords","MySeoDescription")) ;
+//
+//
+//               item.addImages(new ArrayList<ItemImage>(Arrays.asList(new ItemImage(null,"srcImage1"), new ItemImage(null,"srcImage2"))));
+//               itemService.create(item);
+
+           // ItemCategory rootitemCategory = new ItemCategory(null,1,2,0,"root", null);
+            ItemCategory rootitemCategory = itemCategoryService.get(45);
+            //ItemCategory itemCategory = new ItemCategory(null,3,4,0,"root", rootitemCategory);
+            itemCategoryService.delete(100);
+            //itemCategoryService.addChildAsLast(rootitemCategory,"One node yet at LAst");
+               System.out.println("edee: ");
 
             // User user = myUserServ.get(9);
             //System.out.println("edee"+user);

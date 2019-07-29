@@ -1,6 +1,5 @@
 package web.REST;
 
-import auth.payloads.ApiResponse;
 import model.User;
 import model.restpayloads.UpdatePassword;
 import model.restpayloads.UpdateUser;
@@ -9,12 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import service.UserService;
 
 import javax.validation.Valid;
-import java.util.Date;
 
 @RestController
 @RequestMapping(UserController.REST_URL)
@@ -42,9 +39,9 @@ public class UserController {
     public String update(@Valid @RequestBody() UpdateUser updateUser) {
         User userInDb=service.findById(updateUser.getId());
         if (userInDb!=null) {
-            User user = new User(updateUser.getId(), updateUser.getEmail(), userInDb.getPassword(),
+            User user = new User(userInDb.getId(), userInDb.getEmail(), userInDb.getPassword(),
                     updateUser.getName(), updateUser.getPhone(), updateUser.getSex(), userInDb.getRegistered(), userInDb.isEnabled(),
-                     userInDb.getBirthday(),userInDb.getRoles());
+                     updateUser.getBirthday(),userInDb.getRoles());
             service.update(user);
         }
          return  "User successfully updated ";
