@@ -1,21 +1,30 @@
 package model.seo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import model.AbstractBaseEntity;
 import model.items.Item;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "seo_meta_data")
-@SequenceGenerator(name = "my_seq_gen", sequenceName = "seo_meta_data_seq", allocationSize = 1, initialValue = AbstractBaseEntity.START_SEQ)
+//@SequenceGenerator(name = "my_seq_gen", sequenceName = "seo_meta_data_seq", allocationSize = 1, initialValue = AbstractBaseEntity.START_SEQ)
+public class SeoMetaData {
 
-public class SeoMetaData extends AbstractBaseEntity {
+    @Id
+    @Column(name = "id")
+    protected Integer id;
 
-    @OneToOne(mappedBy = "seoMetaData")
+    @OneToOne (mappedBy = "seoMetaData", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @MapsId
+    @JoinColumn(name = "id")
     private Item item;
 
     @Column(name = "title")
     private String title;
+
 
     @Column(name = "keywords")
     private String keywords;
@@ -28,8 +37,17 @@ public class SeoMetaData extends AbstractBaseEntity {
     }
 
     public SeoMetaData(Integer id, String title, String keywords, String description) {
-        super(id);
 
+        this.id = id;
+        this.title = title;
+        this.keywords = keywords;
+        this.description = description;
+    }
+
+    public SeoMetaData(Integer id, Item item, String title, String keywords, String description) {
+
+        this.id = id;
+        this.item = item;
         this.title = title;
         this.keywords = keywords;
         this.description = description;
@@ -41,6 +59,7 @@ public class SeoMetaData extends AbstractBaseEntity {
 
     public void setItem(Item item) {
         this.item = item;
+        this.id = item.getId();
     }
 
     public String getTitle() {

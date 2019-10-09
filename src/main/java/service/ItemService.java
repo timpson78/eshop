@@ -8,8 +8,6 @@ import java.util.List;
 
 public interface ItemService {
 
-    Item findById(int id);
-
     Item create(Item item);
 
     void delete(int id) throws NotFoundException;
@@ -20,5 +18,8 @@ public interface ItemService {
 
     List<Item> getAll();
 
+    List<Item> getAllByPage(int page);
+
+    public Long countPages();
 
 }

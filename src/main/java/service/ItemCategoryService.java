@@ -1,12 +1,10 @@
 package service;
 
-import model.items.Item;
 import model.items.ItemCategory;
 import model.items.payloads.ItemCategoryP;
 import utils.exceptions.NotFoundException;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ItemCategoryService {
 

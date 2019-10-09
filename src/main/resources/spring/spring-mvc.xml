@@ -9,6 +9,9 @@
 
     <bean class="web.json.JacksonObjectMapper" id="objectMapper" factory-method="getMapper"/>
 
+    <context:property-placeholder location="classpath:app/application.properties,
+     classpath:db/db.properties"     ignore-unresolvable="true"/>
+
     <mvc:default-servlet-handler/>
     <mvc:annotation-driven conversion-service="conversionService">
         <mvc:message-converters>

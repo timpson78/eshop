@@ -68,7 +68,7 @@ public class ItemCategoryServiceImp  implements  ItemCategoryService{
     public ItemCategory get(int id) throws NotFoundException {
         return repository.get(id)
                 .orElseThrow(() ->
-                        new NotFoundException("user with " + id + " not found")
+                        new NotFoundException("category with " + id + " not found")
                 );
     }
 
@@ -76,7 +76,7 @@ public class ItemCategoryServiceImp  implements  ItemCategoryService{
     public ItemCategoryP getP(int id) throws NotFoundException {
         return repository.getP(id)
                 .orElseThrow(() ->
-                        new NotFoundException("user with " + id + " not found")
+                        new NotFoundException("category with " + id + " not found")
                 );
     }
 
@@ -84,10 +84,9 @@ public class ItemCategoryServiceImp  implements  ItemCategoryService{
     public ItemCategoryP getRootP() throws NotFoundException {
         return repository.getRootP()
                 .orElseThrow(() ->
-                        new NotFoundException("root user  not found")
+                        new NotFoundException("root category  not found")
                 );
     }
-
 
     @Override
     public void update(ItemCategory itemCategory) {
@@ -134,7 +133,6 @@ public class ItemCategoryServiceImp  implements  ItemCategoryService{
         newItemCategoryP.setParent(parent);
         repository.updateCollectionAsFirst(newItemCategoryP);
         return  repository.saveP(newItemCategoryP);
-
     }
 
     @Override

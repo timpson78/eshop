@@ -6,8 +6,9 @@ import javax.persistence.*;
 @Access(AccessType.FIELD)
 public class AbstractBaseEntity {
     public static final int START_SEQ = 10000;
-    @Id
+
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_seq_gen")
+    @Id
     protected Integer id;
 
     protected AbstractBaseEntity() {

@@ -1,9 +1,11 @@
 package model.items;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import model.AbstractBaseEntity;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @Entity
@@ -11,8 +13,10 @@ import javax.persistence.*;
 @SequenceGenerator(name = "my_seq_gen", sequenceName = "item_mesures_seq", allocationSize = 1, initialValue = AbstractBaseEntity.START_SEQ)
 public class ItemMesure extends AbstractBaseEntity {
 
-    @OneToOne(mappedBy = "mesure")
-    private  Item item;
+    @OneToMany (cascade = CascadeType.ALL , fetch = FetchType.LAZY, mappedBy = "id")
+    @JsonIgnore
+    private List<Item> items;
+
 
     @Column(name = "name")
     private String name;
@@ -21,17 +25,18 @@ public class ItemMesure extends AbstractBaseEntity {
 
     }
 
+
     public ItemMesure(Integer id, String name) {
         super(id);
         this.name = name;
     }
 
-    public Item getItem() {
-        return item;
+    public List<Item> getItem() {
+        return items;
     }
 
-    public void setItem(Item item) {
-        this.item = item;
+    public void setItem(List<Item> item) {
+        this.items = item;
     }
 
     public String getName() {

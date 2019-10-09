@@ -8,28 +8,66 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "items")
 @SequenceGenerator(name = "my_seq_gen", sequenceName = "items_seq", allocationSize = 1, initialValue = AbstractBaseEntity.START_SEQ)
 //    @Column(name = "id", unique = true, nullable = false, columnDefinition = "integer default nextval('global_seq')")
+@NamedQueries({
+        @NamedQuery(name = Item.DELETE, query = "DELETE FROM Item i WHERE i.id=:id"),
+        @NamedQuery(name = Item.GET_ALL, query = "SELECT  i FROM Item i LEFT JOIN i.seoMetaData smd " +
+                "LEFT JOIN  i.brand b  LEFT JOIN  i.mesure m LEFT JOIN i.category c " +
+                "ORDER BY i.title"),
+        @NamedQuery(name = Item.COUNT_ALL, query = "SELECT count(i.id) FROM Item i"),
+})
 @DynamicUpdate
 public class Item extends AbstractBaseEntity {
+
+    public static final String DELETE = "Delete item";
+    public static final String GET_ALL = "Get all items";
+    public static final String COUNT_ALL = "Count all items";
+
+    public Item() {
+
+    }
+
+    public Item(Integer id, @NotBlank String title, String shortDescription, String description, String seoUrl, BigDecimal price, Integer quantity, ItemMesure mesure, BigDecimal discount, String partnumber, BigDecimal weight, ItemBrand brand, ItemCategory category, boolean activity, boolean salesHit, boolean newItem, boolean promotion, SeoMetaData seoMetaData, List<ItemImage> images) {
+        super(id);
+        this.title = title;
+        this.shortDescription = shortDescription;
+        this.description = description;
+        this.seoUrl = seoUrl;
+        this.price = price;
+        this.quantity = quantity;
+        this.mesure = mesure;
+        this.discount = discount;
+        this.partnumber = partnumber;
+        this.weight = weight;
+        this.brand = brand;
+        this.category = category;
+        this.activity = activity;
+        this.salesHit = salesHit;
+        this.newItem = newItem;
+        this.promotion = promotion;
+        this.seoMetaData = seoMetaData;
+        this.images = images;
+    }
+
 
     @Column(name = "title")
     @NotBlank
     private String title;
 
     @Column(name = "short_description")
-    private String short_description;
+    private String shortDescription;
 
     @Column(name = "description")
+
     private String description;
 
     @Column(name = "url_seo")
-    private String urlSeo;
+    private String seoUrl;
 
     @Column(name = "price")
     private BigDecimal price;
@@ -38,12 +76,12 @@ public class Item extends AbstractBaseEntity {
     @Column(name = "quantity")
     private Integer quantity;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="mesure_id")
     private ItemMesure mesure;
 
     @Column(name = "discount")
-    private Integer discount;
+    private BigDecimal discount;
 
     @Column(name = "partnumber")
     private String partnumber;
@@ -51,13 +89,16 @@ public class Item extends AbstractBaseEntity {
     @Column(name = "weight")
     private BigDecimal weight;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="brend_id")
     private ItemBrand brand;
 
-    @OneToOne(fetch = FetchType.EAGER)
+
+  //  @Access(AccessType.PROPERTY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="category_id")
     private ItemCategory category;
+
 
     @Column(name = "activity")
     private boolean activity;
@@ -72,38 +113,12 @@ public class Item extends AbstractBaseEntity {
     private boolean promotion;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="meta_data_id")
+    @PrimaryKeyJoinColumn
     private SeoMetaData seoMetaData;
 
 
-    @OneToMany (cascade = CascadeType.ALL , fetch = FetchType.LAZY, mappedBy = "id")
+    @OneToMany (cascade = CascadeType.ALL , fetch = FetchType.EAGER, mappedBy = "item", orphanRemoval=true)
     private List<ItemImage> images;
-
-    public Item() {
-
-    }
-
-    public Item( Integer id, @NotBlank String title, String short_description, String description, List<ItemImage> images, String urlSeo, BigDecimal price, Integer quantity, ItemMesure mesure, Integer discount, String partnumber, BigDecimal weight, ItemBrand brand, ItemCategory category, boolean activity, boolean salesHit, boolean newItem, boolean promotion, SeoMetaData seoMetaData) {
-        super(id);
-        this.title = title;
-        this.short_description = short_description;
-        this.description = description;
-        this.images = images;
-        this.urlSeo = urlSeo;
-        this.price = price;
-        this.quantity = quantity;
-        this.mesure = mesure;
-        this.discount = discount;
-        this.partnumber = partnumber;
-        this.weight = weight;
-        this.brand = brand;
-        this.category = category;
-        this.activity = activity;
-        this.salesHit = salesHit;
-        this.newItem = newItem;
-        this.promotion = promotion;
-        this.seoMetaData = seoMetaData;
-    }
 
 
     public String getTitle() {
@@ -115,11 +130,11 @@ public class Item extends AbstractBaseEntity {
     }
 
     public String getShort_description() {
-        return short_description;
+        return shortDescription;
     }
 
     public void setShort_description(String short_description) {
-        this.short_description = short_description;
+        this.shortDescription = short_description;
     }
 
     public String getDescription() {
@@ -130,12 +145,12 @@ public class Item extends AbstractBaseEntity {
         this.description = description;
     }
 
-    public String getUrlSeo() {
-        return urlSeo;
+    public String getSeoUrl() {
+        return seoUrl;
     }
 
-    public void setUrlSeo(String urlSeo) {
-        this.urlSeo = urlSeo;
+    public void setSeoUrl(String seoUrl) {
+        this.seoUrl = seoUrl;
     }
 
     public BigDecimal getPrice() {
@@ -162,11 +177,11 @@ public class Item extends AbstractBaseEntity {
         this.mesure = mesure;
     }
 
-    public Integer getDiscount() {
+    public BigDecimal getDiscount() {
         return discount;
     }
 
-    public void setDiscount(Integer discount) {
+    public void setDiscount(BigDecimal discount) {
         this.discount = discount;
     }
 
@@ -256,4 +271,5 @@ public class Item extends AbstractBaseEntity {
         }
         this.images = images;
     }
+
 }

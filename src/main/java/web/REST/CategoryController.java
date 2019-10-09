@@ -61,18 +61,17 @@ public class CategoryController {
             return new ResponseEntity(e.toString(),
                     HttpStatus.NOT_FOUND);
         }
-
     }
     @PostMapping(value = "/updatename", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<SaveResponse> updateNameP(@RequestBody CategoryR categoryR) {
+    public ResponseEntity<String> updateNameP(@RequestBody CategoryR categoryR) {
         service.updateNameP(categoryR.getId(),categoryR.getName());
         return new ResponseEntity("Category successfuly updated", HttpStatus.OK);
     }
 
     @PostMapping(value = "/delete", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<SaveResponse> deleteP(@RequestBody CategoryR categoryR) {
+    public ResponseEntity<String> deleteP(@RequestBody CategoryR categoryR) {
         service.deleteNodeFromTree(categoryR.getId());
         return new ResponseEntity("Category successfuly deleted", HttpStatus.OK);
     }

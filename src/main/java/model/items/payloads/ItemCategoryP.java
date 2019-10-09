@@ -10,9 +10,9 @@ import java.util.Set;
 
 @NamedQueries({
         @NamedQuery(name = ItemCategoryP.GET_ALL_CHILDS, query = "SELECT DISTINCT a FROM ItemCategoryP a LEFT JOIN FETCH a.children  b " +
-                "WHERE a.parent.id = :idParent"),
+                "WHERE a.parent.id = :idParent ORDER BY  a.name asc"),
         @NamedQuery(name = ItemCategoryP.GET_ALL_CHILDS_NULL, query = "SELECT DISTINCT a FROM ItemCategoryP a LEFT JOIN FETCH a.children  b " +
-                "WHERE a.parent.id is NULL"),
+                "WHERE a.parent.id is NULL ORDER BY a.name asc"),
         @NamedQuery(name = ItemCategoryP.GET_ROOT, query = "SELECT DISTINCT a FROM ItemCategoryP a LEFT JOIN FETCH a.children  b " +
                 "WHERE a.leftKey=1"),
         @NamedQuery(name = ItemCategoryP.UPDATE_NAME, query = "UPDATE ItemCategoryP SET name = :name WHERE id = :id"),

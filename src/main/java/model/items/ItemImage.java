@@ -1,5 +1,6 @@
 package model.items;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import model.AbstractBaseEntity;
 
 import javax.persistence.*;
@@ -10,7 +11,8 @@ import javax.persistence.*;
 public class ItemImage extends AbstractBaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_item_id", nullable = false)
+    @JoinColumn(name = "fk_item_id")
+    @JsonIgnore
     private Item item;
 
 
