@@ -1,6 +1,7 @@
 package service;
 
 import model.items.Item;
+import model.items.payloads.REST.ItemFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -66,6 +67,20 @@ public class ItemServiceImp implements ItemService{
     public Long countPages() {
         Long maxItems = repository.countItems();
         return new Double(Math.ceil((double)maxItems/pageSize)).longValue();
+    }
+
+    @Override
+    public List<Item> getFilterWithPagination(int page, ItemFilter filter) {
+        int size = this.pageSize;
+        int first = 1;
+        if (page>0) { first = page * size - size; }
+        return repository.getFilterWithPagination(first, size, filter);
+    }
+
+    @Override
+    public Long countFilterItems(ItemFilter filter) {
+        Long maxFilterItems = repository.countFilterItems(filter);
+        return new Double(Math.ceil((double)maxFilterItems/pageSize)).longValue();
     }
 
 

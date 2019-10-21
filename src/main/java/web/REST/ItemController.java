@@ -1,9 +1,7 @@
 package web.REST;
 
 import model.items.*;
-import model.items.payloads.REST.ItemResponse;
-import model.items.payloads.REST.ItemShortP;
-import model.items.payloads.REST.SaveResponse;
+import model.items.payloads.REST.*;
 import model.restpayloads.ItemsResponse;
 import model.seo.SeoMetaData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +14,6 @@ import service.ItemBrandService;
 import service.ItemCategoryService;
 import service.ItemMesureService;
 import service.ItemService;
-import utils.exceptions.NotFoundException;
 
 import java.util.List;
 
@@ -174,4 +171,19 @@ public class ItemController {
     public Long getPages() {
         return  service.countPages();
     }
+
+    @PostMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
+    public FilterItemsResponse filter(@RequestBody FilterItemsRequest filterRequest) {
+        Long maxFilterPages;
+        List<Item> filterResult = service.getFilterWithPagination(filterRequest.getPage(), filterRequest.getFilter());
+        if (filterResult==null){
+            filterResult = service.getAllByPage(1);
+            maxFilterPages = service.countPages();
+        } else {
+            maxFilterPages = service.countFilterItems(filterRequest.getFilter());
+        }
+        return  new FilterItemsResponse( maxFilterPages, filterResult);
+    }
+
+
 }

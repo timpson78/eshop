@@ -20,13 +20,24 @@ import java.util.List;
                 "LEFT JOIN  i.brand b  LEFT JOIN  i.mesure m LEFT JOIN i.category c " +
                 "ORDER BY i.title"),
         @NamedQuery(name = Item.COUNT_ALL, query = "SELECT count(i.id) FROM Item i"),
+        @NamedQuery(name = Item.COUNT_FILTER, query = "SELECT count(i.id) FROM Item i")
 })
 @DynamicUpdate
 public class Item extends AbstractBaseEntity {
 
     public static final String DELETE = "Delete item";
     public static final String GET_ALL = "Get all items";
+    public static final String GET_FILTER = "Get filter items";
     public static final String COUNT_ALL = "Count all items";
+    public static final String COUNT_FILTER = "Count filter items";
+
+
+    public static final String NAMED_FILTER_QUERY = "SELECT  i FROM Item i LEFT JOIN i.seoMetaData smd " +
+            "LEFT JOIN  i.brand b  LEFT JOIN  i.mesure m LEFT JOIN i.category c ";
+
+    public static final String NAMED_FILTER_COUNT_QUERY = "SELECT count(i.id)  FROM Item i LEFT JOIN i.seoMetaData smd " +
+            "LEFT JOIN  i.brand b  LEFT JOIN  i.mesure m LEFT JOIN i.category c ";
+
 
     public Item() {
 
