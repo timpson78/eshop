@@ -3,17 +3,17 @@ package web.REST;
 import model.items.*;
 import model.items.payloads.REST.*;
 import model.restpayloads.ItemsResponse;
-import model.seo.SeoMetaData;
+import model.items.seo.SeoMetaData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import service.ItemBrandService;
-import service.ItemCategoryService;
-import service.ItemMesureService;
-import service.ItemService;
+import service.item.ItemBrandService;
+import service.item.ItemCategoryService;
+import service.item.ItemMesureService;
+import service.item.ItemService;
 
 import java.util.List;
 

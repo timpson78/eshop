@@ -2,7 +2,7 @@ package model.items;
 
 
 import model.AbstractBaseEntity;
-import model.seo.SeoMetaData;
+import model.items.seo.SeoMetaData;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
@@ -37,33 +37,6 @@ public class Item extends AbstractBaseEntity {
 
     public static final String NAMED_FILTER_COUNT_QUERY = "SELECT count(i.id)  FROM Item i LEFT JOIN i.seoMetaData smd " +
             "LEFT JOIN  i.brand b  LEFT JOIN  i.mesure m LEFT JOIN i.category c ";
-
-
-    public Item() {
-
-    }
-
-    public Item(Integer id, @NotBlank String title, String shortDescription, String description, String seoUrl, BigDecimal price, Integer quantity, ItemMesure mesure, BigDecimal discount, String partnumber, BigDecimal weight, ItemBrand brand, ItemCategory category, boolean activity, boolean salesHit, boolean newItem, boolean promotion, SeoMetaData seoMetaData, List<ItemImage> images) {
-        super(id);
-        this.title = title;
-        this.shortDescription = shortDescription;
-        this.description = description;
-        this.seoUrl = seoUrl;
-        this.price = price;
-        this.quantity = quantity;
-        this.mesure = mesure;
-        this.discount = discount;
-        this.partnumber = partnumber;
-        this.weight = weight;
-        this.brand = brand;
-        this.category = category;
-        this.activity = activity;
-        this.salesHit = salesHit;
-        this.newItem = newItem;
-        this.promotion = promotion;
-        this.seoMetaData = seoMetaData;
-        this.images = images;
-    }
 
 
     @Column(name = "title")
@@ -130,6 +103,34 @@ public class Item extends AbstractBaseEntity {
 
     @OneToMany (cascade = CascadeType.ALL , fetch = FetchType.EAGER, mappedBy = "item", orphanRemoval=true)
     private List<ItemImage> images;
+
+
+
+    public Item() {
+
+    }
+
+    public Item(Integer id, @NotBlank String title, String shortDescription, String description, String seoUrl, BigDecimal price, Integer quantity, ItemMesure mesure, BigDecimal discount, String partnumber, BigDecimal weight, ItemBrand brand, ItemCategory category, boolean activity, boolean salesHit, boolean newItem, boolean promotion, SeoMetaData seoMetaData, List<ItemImage> images) {
+        super(id);
+        this.title = title;
+        this.shortDescription = shortDescription;
+        this.description = description;
+        this.seoUrl = seoUrl;
+        this.price = price;
+        this.quantity = quantity;
+        this.mesure = mesure;
+        this.discount = discount;
+        this.partnumber = partnumber;
+        this.weight = weight;
+        this.brand = brand;
+        this.category = category;
+        this.activity = activity;
+        this.salesHit = salesHit;
+        this.newItem = newItem;
+        this.promotion = promotion;
+        this.seoMetaData = seoMetaData;
+        this.images = images;
+    }
 
 
     public String getTitle() {

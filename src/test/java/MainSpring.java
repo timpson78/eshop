@@ -1,16 +1,9 @@
 import model.items.*;
-import model.seo.SeoMetaData;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.transaction.annotation.Transactional;
-import repository.ItemCategoryRepositoryImp;
-import repository.ItemRepositoryImp;
-import service.*;
+import service.item.ItemCategoryServiceImp;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class MainSpring {
 

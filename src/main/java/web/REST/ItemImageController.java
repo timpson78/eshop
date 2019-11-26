@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import service.File.FileStorageService;
-import service.ItemImageService;
+import service.item.ItemImageService;
 
 @RestController
 @RequestMapping( ItemImageController.REST_URL)
