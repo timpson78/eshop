@@ -12,7 +12,7 @@ public class ItemPropertyValueBoolean extends AbstractBaseEntity{
     @Column(name = "value")
     private boolean value;
 
-    @OneToOne(mappedBy = "BooleanValue", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "booleanValue", cascade = CascadeType.ALL)
     @JsonIgnore
     @MapsId
     @JoinColumn(name = "id")

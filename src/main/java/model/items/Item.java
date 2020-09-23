@@ -105,7 +105,6 @@ public class Item extends AbstractBaseEntity {
     private List<ItemImage> images;
 
 
-
     public Item() {
 
     }

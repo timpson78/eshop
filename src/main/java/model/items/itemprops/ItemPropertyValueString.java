@@ -13,7 +13,7 @@ public class ItemPropertyValueString  extends AbstractBaseEntity{
     private String value;
 
 
-    @OneToOne(mappedBy = "StringValue", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "stringValue", cascade = CascadeType.ALL)
     @JsonIgnore
     @MapsId
     @JoinColumn(name = "id")

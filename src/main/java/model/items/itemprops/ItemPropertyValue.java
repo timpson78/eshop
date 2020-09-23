@@ -3,15 +3,15 @@ package model.items.itemprops;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import model.AbstractBaseEntity;
-import model.items.seo.SeoMetaData;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "item_property_values")
 public class ItemPropertyValue extends AbstractBaseEntity{
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_common_property_id")
     @JsonIgnore
     private ItemCommonProperty itemCommonProperty;
@@ -19,27 +19,25 @@ public class ItemPropertyValue extends AbstractBaseEntity{
 
     @OneToOne(cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
-    private ItemPropertyValueInteger IntegerValue;
+    private ItemPropertyValueInteger integerValue;
 
 
     @OneToOne(cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
-    private ItemPropertyValueBoolean BooleanValue;
+    private ItemPropertyValueBoolean booleanValue;
+
 
 
     @OneToOne(cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
-    private ItemPropertyValueString StringValue;
+    private ItemPropertyValueString stringValue;
+
+    @OneToMany (cascade = CascadeType.ALL , fetch = FetchType.LAZY, mappedBy = "itemPropertyValue")
+    //LAZY as Simultaneously Fetch Multiple Bags as Cartesian product
+    private List<ItemPropertyValueList> listValues;
 
     public ItemPropertyValue() {
 
-    }
-
-    public ItemPropertyValue(ItemCommonProperty itemCommonProperty, ItemPropertyValueInteger integerValue, ItemPropertyValueBoolean booleanValue, ItemPropertyValueString stringValue) {
-        this.itemCommonProperty = itemCommonProperty;
-        IntegerValue = integerValue;
-        BooleanValue = booleanValue;
-        StringValue = stringValue;
     }
 
     public ItemCommonProperty getItemCommonProperty() {
@@ -51,26 +49,34 @@ public class ItemPropertyValue extends AbstractBaseEntity{
     }
 
     public ItemPropertyValueInteger getIntegerValue() {
-        return IntegerValue;
+        return integerValue;
     }
 
     public void setIntegerValue(ItemPropertyValueInteger integerValue) {
-        IntegerValue = integerValue;
+        this.integerValue = integerValue;
     }
 
     public ItemPropertyValueBoolean getBooleanValue() {
-        return BooleanValue;
+        return booleanValue;
     }
 
     public void setBooleanValue(ItemPropertyValueBoolean booleanValue) {
-        BooleanValue = booleanValue;
+        this.booleanValue = booleanValue;
     }
 
     public ItemPropertyValueString getStringValue() {
-        return StringValue;
+        return stringValue;
     }
 
     public void setStringValue(ItemPropertyValueString stringValue) {
-        StringValue = stringValue;
+        this.stringValue = stringValue;
+    }
+
+    public List<ItemPropertyValueList> getListValues() {
+        return listValues;
+    }
+
+    public void setListValues(List<ItemPropertyValueList> listValues) {
+        this.listValues = listValues;
     }
 }

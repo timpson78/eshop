@@ -12,7 +12,7 @@ public class ItemPropertyValueInteger extends AbstractBaseEntity{
     @Column(name = "value")
     private int value;
 
-    @OneToOne(mappedBy = "IntegerValue", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "integerValue", cascade = CascadeType.ALL)
     @JsonIgnore
     @MapsId
     @JoinColumn(name = "id")
